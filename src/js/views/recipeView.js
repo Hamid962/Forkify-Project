@@ -14,6 +14,13 @@ class RecipeView extends View {
       window.addEventListener(ev, handler)
     );
   }
+  addHandlerBookmark(handler) {
+    this._parentEl.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--bookmark");
+      if (!btn) return;
+      handler();
+    });
+  }
 
   // _generateMarkup() {
   //   return `
@@ -133,8 +140,24 @@ class RecipeView extends View {
             <span class="recipe__info-data recipe__info-data--people">${
               this._data.servings
             }</span>
-            <span class="recipe__info-text">${this._data.servings}</span>
-
+            <span class="recipe__info-text">servings</span>
+            <div class="recipe__info-buttons">
+                       <button class="btn--tiny btn--update-servings" data-update-to="${
+                         this._data.servings - 1
+                       }">
+                        <svg>
+                          <use href="${icons}#icon-minus-circle"></use>
+                        </svg>
+                      </button>
+                      <button class="btn--tiny btn--update-servings" data-update-to="${
+                        this._data.servings + 1
+                      }">
+                        <svg>
+                          <use href="${icons}#icon-plus-circle"></use>
+                        </svg>
+                      </button>
+                    </div>
+                    
             <div class="recipe__info-buttons">
               <button class="btn--tiny btn--increase-servings">
                 <svg>
@@ -148,18 +171,21 @@ class RecipeView extends View {
               </button>
             </div>
           </div>
-
-          <div class="recipe__user-generated">
-            <svg>
-              <use href="${icons}.svg_icon-user"></use>
-            </svg>
-          </div>
-          <button class="btn--round">
-            <svg class="">
-              <use href="${icons}.svg_icon-bookmark-fill"></use>
-            </svg>
-          </button>
-        </div>
+          <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
+                   <svg>
+                     <use href="${icons}#icon-user"></use>
+                   </svg>
+                 </div>
+                 <button class="btn--round btn--bookmark">
+                   <svg class="">
+                    <use href="${icons}#icon-bookmark${
+      this._data.bookmarked ? "-fill" : ""
+    }"></use>
+                  </svg>
+                </button>
+              </div>
+         
+        
 
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>

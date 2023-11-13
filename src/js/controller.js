@@ -4,6 +4,7 @@ import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
+import bookmarksView from "./views/bookmarksView.js";
 import paginationView from "./views/paginationView.js";
 
 if (module.hot) {
@@ -66,9 +67,22 @@ const controllerPagination = function (goToPage) {
 
   paginationView.render(model.state.search);
 };
+
+//
+const controllerBookmark = function () {
+  if (!model.state.recipe.bookmarked) {
+    model.addBookmark(model.state.recipe);
+  } else model.deleteBookmark(model.state.recipe.id);
+
+  console.log(model.state.recipe);
+  recipeView.render(model.state.recipe);
+  bookmarksView.render(model.state.bookmark);
+};
+
 // controllerSearchResults();
 const init = function () {
   recipeView.addHandlerRender(showRecipe);
+  recipeView.addHandlerBookmark(controllerBookmark);
   searchView.addHandlerSearch(controllerSearchResults);
   paginationView.addHandlerClick(controllerPagination);
 };
